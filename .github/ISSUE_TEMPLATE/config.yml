@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Odex.AspNetCore.Clarc.Domain
+    url: https://github.com/o-shabi/odex-clarc-domain-aspnetcore/issues
+    about: Issues specific to the Domain package (aggregates, repository interfaces, policies).
+  - name: Odex.AspNetCore.Clarc.Infrastructure
+    url: https://github.com/o-shabi/odex-clarc-infrastructure-aspnetcore/issues
+    about: Issues specific to Infrastructure helpers (query builders, paging extensions, transaction context).
