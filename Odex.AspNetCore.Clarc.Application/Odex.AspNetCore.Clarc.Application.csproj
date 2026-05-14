@@ -1,0 +1,52 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <RootNamespace>Odex.AspNetCore.Clarc.Application</RootNamespace>
+        <AssemblyName>Odex.AspNetCore.Clarc.Application</AssemblyName>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <NeutralLanguage>en</NeutralLanguage>
+
+        <PackageId>Odex.AspNetCore.Clarc.Application</PackageId>
+        <Version>0.2.0</Version>
+        <Title>Odex CLARC — Application</Title>
+        <Authors>Asen O'Shabi</Authors>
+        <Company>O'Shabi</Company>
+        <Copyright>Copyright © Asen O'Shabi</Copyright>
+        <Description>Application layer for CQRS-style .NET 9 apps: MediatR registration, FluentValidation, configurable pipeline behaviors (validation, logging, metrics, unhandled-exception logging), typed exceptions, and flexible assembly scanning via ClarcApplicationBuilder.</Description>
+        <PackageTags>ddd;clean-architecture;aspnetcore;cqrs;mediatr;fluentvalidation;application;pipeline;clarc;dotnet</PackageTags>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <PackageProjectUrl>https://github.com/o-shabi/odex-clarc-application-aspnetcore</PackageProjectUrl>
+        <PackageReleaseNotes>https://github.com/o-shabi/odex-clarc-application-aspnetcore/blob/main/CHANGELOG.md</PackageReleaseNotes>
+        <RepositoryUrl>https://github.com/o-shabi/odex-clarc-application-aspnetcore.git</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(ContinuousIntegrationBuild)' == 'true'">
+        <Deterministic>true</Deterministic>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="FluentValidation" Version="12.0.0" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
+        <PackageReference Include="MediatR" Version="13.0.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0" />
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="$(MSBuildThisFileDirectory)..\README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+</Project>

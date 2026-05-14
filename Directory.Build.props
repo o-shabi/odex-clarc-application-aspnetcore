@@ -1,0 +1,14 @@
+<Project>
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <!-- Audit requires NuGet.org; enable on CI builds only. -->
+    <EnableNuGetAudit Condition="'$(ContinuousIntegrationBuild)' == 'true'">true</EnableNuGetAudit>
+    <EnableNuGetAudit Condition="'$(ContinuousIntegrationBuild)' != 'true'">false</EnableNuGetAudit>
+    <NuGetAudit Condition="'$(ContinuousIntegrationBuild)' == 'true'">true</NuGetAudit>
+    <NuGetAudit Condition="'$(ContinuousIntegrationBuild)' != 'true'">false</NuGetAudit>
+    <NuGetAuditMode>direct</NuGetAuditMode>
+  </PropertyGroup>
+</Project>
