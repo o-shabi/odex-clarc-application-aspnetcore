@@ -26,3 +26,7 @@ updates:
     directory: "/"
     schedule:
       interval: monthly
+    ignore:
+      # Stay on current major (e.g. checkout@v4) until workflows are tested with newer action majors.
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
