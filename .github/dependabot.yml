@@ -5,12 +5,22 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 10
+    ignore:
+      # Library targets net9.0; Microsoft.Extensions 10.x aligns with .NET 10 — restore fails until TFM bumps.
+      - dependency-name: "Microsoft.Extensions.*"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: nuget
     directory: "/Odex.AspNetCore.Clarc.Application.Tests"
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    ignore:
+      - dependency-name: "Microsoft.Extensions.*"
+        update-types: ["version-update:semver-major"]
+      # Test SDK 18.x targets the next VS/.NET wave; stay on 17.x with net9.0 until the solution moves to net10.
+      - dependency-name: "Microsoft.NET.Test.Sdk"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: github-actions
     directory: "/"
