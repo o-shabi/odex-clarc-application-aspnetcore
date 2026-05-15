@@ -5,6 +5,7 @@ namespace Odex.AspNetCore.Clarc.Application.Validators;
 
 /// <summary>
 /// FluentValidation rules for <see cref="PagedQuery{TResponse}"/> (page ≥ 1, page size 1–512).
+/// Inherits <see cref="BaseValidator{T}"/> so paging validation matches other application validators.
 /// </summary>
 /// <typeparam name="T">The query response type (unused for rules; required for <see cref="PagedQuery{TResponse}"/>).</typeparam>
 public class PagedValidator<T> : BaseValidator<PagedQuery<T>>

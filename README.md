@@ -156,7 +156,7 @@ Pipeline loggers **never** write request payloads. Treat application DTOs as unt
 | Feature                       | Description                                                                                                                                     |
 |-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
 | 🧩 **CQRS Base Records**      | `BaseCommand` / `BaseCommand<TResponse>`, `BaseQuery<TResponse>`, `ICommand` / `IQuery`, `BaseResponse` with timestamps. |
-| 📄 **Paged Support**          | `PagedQuery<TResponse>` (includes **`SkipCount`**) / `PagedResponse<T>` with **`IReadOnlyList<T>`** items; **`PagedValidator<T>`** for untrusted input. |
+| 📄 **Paged Support**          | `PagedQuery<TResponse>` (includes **`SkipCount`**) / `PagedResponse<T>` with **`IReadOnlyList<T>`** items; **`PagedValidator<T>`** extends **`BaseValidator<PagedQuery<T>>`** for untrusted input. |
 | ✅ **Validation Pipeline**     | `ValidationPipelineBehavior` with rule sets, parallel/sequential validators, **`ISkipValidation`** opt-out, structured **`ValidationFailureDetail`**. |
 | ⚠️ **Application Exceptions** | Typed exceptions including **`NotFoundException`**, **`ConflictException`**, **`GoneException`**, **`ResourceTimeoutException`**, **`TooManyRequestsException`**, plus **`ErrorCode`** on **`ApplicationException`**. |
 | 📊 **Observability**          | Optional **`LoggingPipelineBehavior`**, **`RequestMetricsPipelineBehavior`** (`System.Diagnostics.Metrics`), **`UnhandledExceptionLoggingPipelineBehavior`**. |
@@ -347,6 +347,8 @@ public abstract class ApplicationException : Exception
 
 **BaseValidator<T>**
 
+Thin base type for application validators (inherits FluentValidation’s **`AbstractValidator<T>`**). Use it for commands, queries, and custom rules; subclass it the same way for paging.
+
 ```csharp
 using FluentValidation;
 
@@ -357,13 +359,14 @@ public class BaseValidator<T> : AbstractValidator<T>;
 
 **PagedValidator<T>**
 
+Built-in paging rules for **`PagedQuery<TResponse>`** (page ≥ 1, page size 1–512). Inherits **`BaseValidator<PagedQuery<T>>`** so it follows the same validator pattern as your other application validators.
+
 ```csharp
-using FluentValidation;
 using Odex.AspNetCore.Clarc.Application.CQRS;
 
 namespace Odex.AspNetCore.Clarc.Application.Validators;
 
-public class PagedValidator<T> : AbstractValidator<PagedQuery<T>>
+public class PagedValidator<T> : BaseValidator<PagedQuery<T>>
 {
     public PagedValidator()
     {
@@ -427,8 +430,19 @@ public class CreateUserCommandValidator : BaseValidator<CreateUserCommand>
 
 ### Using Paged Query
 
+Register **`PagedValidator<TResponse>`** (or subclass it from **`BaseValidator<PagedQuery<TResponse>>`**) when the query is bound from HTTP. Default rules: page ≥ 1, page size 1–512.
+
 ```csharp
 public record GetUsersPagedQuery : PagedQuery<PagedResponse<UserResponse>>;
+
+// Optional: add query-specific rules on top of paging (T matches PagedQuery<TResponse>'s TResponse)
+public class GetUsersPagedQueryValidator : PagedValidator<PagedResponse<UserResponse>>
+{
+    public GetUsersPagedQueryValidator()
+    {
+        RuleFor(x => x.SortBy).MaximumLength(64).When(x => x.SortBy is not null);
+    }
+}
 
 public class GetUsersPagedQueryHandler : IRequestHandler<GetUsersPagedQuery, PagedResponse<UserResponse>>
 {

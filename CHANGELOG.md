@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **`PagedValidator<T>`** now inherits **`BaseValidator<PagedQuery<T>>`** instead of **`AbstractValidator<PagedQuery<T>>`** directly, matching other application validators.
+
 ## [0.2.0] - 2026-05-15
 
 ### Added
